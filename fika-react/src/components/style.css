@@ -114,6 +114,11 @@ a.tm-text-primary:hover { color:#f9ebaa; }
     color: #f9ebaa;
 }
 
+.nav-link-useraccount.active,
+.nav-link-useraccount-3:hover{
+    color: #f9ebaa;
+}
+
 .tm-search-input {
     width: 360px;
     border-radius: 30px;

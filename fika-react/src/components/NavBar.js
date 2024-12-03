@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link,useNavigate } from 'react-router-dom';
 import './style.css';
 import Logo from "../images/logo.png";
 import godMintImage from "../images/godMint.png";
@@ -7,7 +7,23 @@ import godMintImage from "../images/godMint.png";
 const NavBar = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     const username = user ? user.username : null;
+    const userRole = user ? user.role : null;
     const userImage = (user && user.userid === 2) ? godMintImage : (user ? user.image : null);
+
+    const navigate = useNavigate(); // useNavigate hook from react-router-dom
+
+    const handleAccountClick = () => {
+        if (userRole === "god") {
+            navigate('/god');
+        } else if (userRole === "disciple") {
+            navigate('/yourAccount');
+        }
+    };
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("user");
+        navigate('/');
+    };
 
     return (
         <nav className="navbar navbar-expand-lg">
@@ -35,7 +51,12 @@ const NavBar = () => {
                 
                 <ul className="navbar-nav ms-auto mb-lg-0 mt-lg-0" id="useraccount">
                     <li className="nav-item">
-                        <a className="nav-link useraccount" href="yourAccount">
+                        <button className="nav-link btn btn-link" onClick={handleLogout}>
+                            Log Out
+                        </button>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link nav-link-useraccount" onClick={handleAccountClick}>
                             <span className="mr-2" style={{fontSize: '20px'}}>
                                 {username}
                                 <img
