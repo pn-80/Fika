@@ -2,11 +2,12 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import './style.css';
 import Logo from "../images/logo.png";
+import godMintImage from "../images/godMint.png";
 
 const NavBar = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     const username = user ? user.username : null;
-    const userImage = (user && user.id === 2) ? './images/godMint.png' : (user ? user.image : null);
+    const userImage = (user && user.userid === 2) ? godMintImage : (user ? user.image : null);
 
     return (
         <nav className="navbar navbar-expand-lg">

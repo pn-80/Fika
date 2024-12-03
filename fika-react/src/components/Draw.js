@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import './Draw.css';
 
 export default function Draw() {
@@ -59,6 +59,18 @@ export default function Draw() {
     contextReference.current.strokeStyle = color;
   };
 
+  //convert image to base64
+    const handleSaveClick = () => {
+      const canvas = canvasReference.current;
+      let base64Image = canvas.toDataURL();
+      if (base64Image) {
+        base64Image = base64Image.split(',')[1];
+        console.log('Base64 Image:', base64Image);
+      } else {
+        console.log('No image to save');
+      }
+    };
+
   return (
     <div className="Draw">
       <canvas
@@ -76,7 +88,7 @@ export default function Draw() {
             style={{ backgroundColor: color }}
           ></button>
         ))}
-        <button>SAVE</button>
+        <button onClick={handleSaveClick}>SAVE</button>
       </div>
     </div>
   );

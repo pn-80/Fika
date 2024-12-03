@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
-import art1 from '../images/testingArtworks.png';
 
 const Gallery = () => {
     const [images, setImages] = useState([]);
