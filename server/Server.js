@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
+const bodyParser = require('body-parser');
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
 
 const port = 3001;
 
@@ -99,14 +101,12 @@ app.post('/api/delete-arts', (req, res) => {
     return res.status(400).json({ message: 'Art ID is required' });
   }
 
-  // Start a transaction
   con.beginTransaction((err) => {
     if (err) {
       console.error('Error starting transaction:', err);
       return res.status(500).json({ message: 'Server error' });
     }
-
-    // First delete query from user_artworks table
+  
     const query1 = 'DELETE FROM user_artworks WHERE art_id = ?';
     con.query(query1, [artId], (err, results) => {
       if (err) {
@@ -122,7 +122,6 @@ app.post('/api/delete-arts', (req, res) => {
         });
       }
 
-      // Second delete query from artworks table
       const query2 = 'DELETE FROM artworks WHERE art_id = ?';
       con.query(query2, [artId], (err, results) => {
         if (err) {
@@ -149,6 +148,61 @@ app.post('/api/delete-arts', (req, res) => {
 
           // Respond with success if both queries were successful
           res.json({ message: 'Art deleted successfully' });
+        });
+      });
+    });
+  });
+});
+
+app.post('/api/save-image', async (req, res) => {
+  const { title, art, owner_id } = req.body;
+
+  // Check if all required fields are present
+  if (!title || !art || !owner_id) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  // Start transaction
+  con.beginTransaction((err) => {
+    if (err) {
+      console.error('Error starting transaction:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    // Insert into artworks table
+    const query1 = 'INSERT INTO artworks (title, art) VALUES (?, ?)';
+    con.query(query1, [title, art], (err, results) => {
+      if (err) {
+        return con.rollback(() => {
+          console.error('Error inserting into artworks:', err);
+          return res.status(500).json({ message: 'Server error' });
+        });
+      }
+
+      // Extract the art_id from the results of the first query
+      const artId = results.insertId;
+
+      // Insert into user_artworks table
+      const query2 = 'INSERT INTO user_artworks (art_id, owner_id) VALUES (?, ?)';
+      con.query(query2, [artId, owner_id], (err, results) => {
+        if (err) {
+          return con.rollback(() => {
+            console.error('Error inserting into user_artworks:', err);
+            return res.status(500).json({ message: 'Server error' });
+          });
+        }
+
+        // Commit transaction after both queries are successful
+        con.commit((err) => {
+          if (err) {
+            return con.rollback(() => {
+              console.error('Error committing transaction:', err);
+              return res.status(500).json({ message: 'Server error' });
+            });
+          }
+
+          // Respond with success if both queries were successful
+          res.json({ message: 'Art saved successfully' });
         });
       });
     });

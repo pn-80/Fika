@@ -3,20 +3,24 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0; /* Optional background color */
+    height: calc(100vh - 86px);
+    background-color: #f0f0f0;
   }
   
   canvas {
-    border: 1px solid #000; /* Optional border for better visibility */
+    border: 1px solid #000;
+    margin: 10px;
   }
   
   .buttons {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 10px;
     margin-top: 10px;
   }
   
   .buttons button {
     margin-right: 5px;
-    padding: 10px 15px; /* Adjust button padding for better appearance */
+    padding: 10px 15px;
+    cursor: pointer;
   }
-  

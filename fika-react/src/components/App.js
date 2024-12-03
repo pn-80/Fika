@@ -9,12 +9,12 @@ import NavBar from './NavBar.js';
 import CreateAvatar from "./CreateAvatar.js";
 import Map from './Map.js';
 import AccountPage from './AccountPage.js';
-import DelSpaces from './DelSpaces.js';
+import EditSpaces from './EditSpaces.js';
 import Draw from './Draw.js';
 import Polygon from './Polygon.js';
 import Gallery from './Gallery.js';
 import GodPage from './GodPage.js';
-import DelArts from './DelArts.js';
+import EditArts from './EditArts.js';
 
 function App() {
   const location = useLocation();
@@ -32,8 +32,8 @@ function App() {
         <Route path="/create-avatar" exact element={<CreateAvatar />} />
         <Route path="/map" exact element={<Map />} />
         <Route path="/yourAccount" exact element={<AccountPage />} />
-        <Route path="/delSpace" exact element={<DelSpaces />} />
-        <Route path="/delArts" exact element={<DelArts />} />
+        <Route path="/editSpace" exact element={<EditSpaces />} />
+        <Route path="/editArt" exact element={<EditArts />} />
         <Route path="/draw" exact element={<Draw />} />
         <Route path="/polygon" exact element={<Polygon />} />
         <Route path="/gallery" exact element={<Gallery />} />

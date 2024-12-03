@@ -114,7 +114,7 @@ const DelAccountPage = () => {
         <div className="row mb-4">
           <h2 className="col-6 tm-text-primary">Your Spaces</h2>
           <div className="col-6 d-flex justify-content-end align-items-center">
-              <a href="delSpace" className="btn btn-primary">Delete</a>
+              <a href="editSpace" className="btn btn-primary">Edit</a>
             </div>
         </div>
         <div className="row tm-mb-90 tm-gallery">
@@ -150,7 +150,7 @@ const DelAccountPage = () => {
               Your Artworks
             </h2>
             <div className="col-6 d-flex justify-content-end align-items-center">
-              <a href="yourAccount" className="btn btn-primary">return</a>
+              <a href="yourAccount" className="btn btn-primary">Return</a>
             </div>
         </div>
         <div className="row tm-mb-90 tm-gallery">

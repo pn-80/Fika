@@ -160,7 +160,7 @@ const DelAccountPage = () => {
               Your Artworks
             </h2>
             <div className="col-6 d-flex justify-content-end align-items-center">
-              <a href="delArts" className="btn btn-primary">Delete</a>
+              <a href="editArt" className="btn btn-primary">Edit</a>
             </div>
         </div>
         <div className="row tm-mb-90 tm-gallery">
