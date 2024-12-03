@@ -1,0 +1,95 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+  }
+  
+  .register-card {
+    display: flex;
+    background-color: #ebeece;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 400px; /* Adjust the card width */
+    width: 100%;
+  }
+  
+  .image-section {
+    flex: 1;
+    background-color: #d5d8ba;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures no overflow if the image is larger */
+  }
+  
+  .image-section img {
+    width: 100%; /* Stretch the image to fill the width */
+    height: 100%; /* Stretch the image to fill the height */
+    object-fit: cover; /* Crop the image to maintain its aspect ratio while filling */
+  }
+  
+  
+  .form-section {
+    flex: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #4e3256;
+  }
+  
+  .input-group input {
+    width: 90%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #4e3256;
+    border-radius: 5px;
+    color: #f9ffba;
+  }
+  
+  .no-account {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #2c2936;
+    text-decoration: none;
+    margin: 10px 0;
+  }
+  
+  .no-account:hover {
+    text-decoration: underline;
+  }
+  
+  .submit-btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .submit-btn button {
+    background-color: #df92ce;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+  }
+  
+  .submit-btn button:hover {
+    background-color: #bc47b7;
+  }
+  

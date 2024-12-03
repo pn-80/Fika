@@ -1,0 +1,134 @@
+@font-face {
+    font-family: 'Pixel';
+    src: URL('VT323-Regular.ttf') format('truetype');
+    size-adjust: 125%;
+}
+
+.join-space-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #2c2936;
+    height: 100vh;
+
+}
+
+/* Add padding to the container div to give space around the image */
+.join-space-container .banner {
+    padding: 20px;  /* Adjust padding as needed */
+    cursor: pointer;
+    display: flex;  
+    border-radius: 8px; 
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for a more distinct look */
+}
+
+/* Make the image responsive */
+.join-space-container .banner-image {
+    width: 99%;   /* Make sure the image is responsive */
+    height: 450px;    /* Set a fixed height (adjust as needed) */
+    object-fit: cover;
+}
+
+
+/* Lower Section */
+.lower-section {
+    flex: 1;
+    display: flex;
+    background-color: #2c2936; /* Placeholder background */
+}
+
+/* Column Styling */
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+/* Hot Space Column */
+.hot-space h2 {
+    text-align: left;
+    color: #6969c9;
+    margin: 10px;
+    font-size: 3rem;
+
+}
+
+.square-box {
+    flex: 1;
+    margin: 10px;
+    width: 90%;
+    background-color: #6969c9; /* Placeholder color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.square-box:hover {
+    transform: scale(1.05);
+}
+
+/* Recent Space Column */
+.recent-space h2 {
+    color: #2dc6e9;
+    margin: 10px;
+    font-size: 3rem;
+}
+
+.recent-list {
+    flex: 1;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.recent-item {
+    background-color: #73d9f0; /* Placeholder color */
+    margin-bottom: 5px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.recent-item:hover {
+    background-color: #008faf;
+}
+
+/* Right Column Styling */
+/* Right Column Styling */
+.right-space {
+    flex: 1;
+    display: grid;
+    
+    grid-template-rows: repeat(3, 1fr); /* Three equal-height rows */
+    gap: 10px; /* Space between the boxes */
+    height: 90%; /* Ensure it fills the available space */
+    width: 100%; /* Ensure it fills the width */
+}
+
+.right-space .square-box {
+    background-color: #df92ce; /* Placeholder color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure each box fills its grid cell */
+}
+
+.right-space .square-box:hover {
+    transform: scale(1.05);
+}
+
+.right-space h2 {
+    color: #df92ce;
+    margin: 10px;
+    font-size: 3rem;
+}
+
+
+

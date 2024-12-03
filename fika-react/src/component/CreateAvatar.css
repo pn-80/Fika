@@ -1,0 +1,31 @@
+/* File: src/components/AvatarUploader/AvatarUploader.css */
+.avatar-uploader {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .avatar-preview {
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #f0f0f0;
+  }
+  
+  .avatar-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  
+  .file-input {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .button-section { display: flex; align-items: center; margin-left: 10px; /* Adjust this value as needed for spacing */ } .avatar-actions { display: flex; align-items: center; width: 100%; justify-content: center; } button { margin-left: 10px; }/* Adjust spacing between input and button */
