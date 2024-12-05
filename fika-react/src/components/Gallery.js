@@ -39,6 +39,7 @@ const Gallery = () => {
                     </div>
                       <figcaption className="d-flex align-items-center justify-content-center">
                           <h2>{image.title}</h2>
+                          {/*<a href="map"></a>*/}
                       </figcaption>
                   </figure>
                   <div className="d-flex justify-content-between tm-text-gray">

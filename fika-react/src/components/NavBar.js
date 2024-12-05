@@ -51,7 +51,7 @@ const NavBar = () => {
                 
                 <ul className="navbar-nav ms-auto mb-lg-0 mt-lg-0" id="useraccount">
                     <li className="nav-item">
-                        <button className="nav-link btn btn-link" onClick={handleLogout}>
+                        <button className="nav-link logout-link" onClick={handleLogout}>
                             Log Out
                         </button>
                     </li>

@@ -2,43 +2,45 @@ import React, { useState, useEffect } from 'react';
 import SearchBox from './SearchBox';
 import './style.css';
 
-const DelAccountPage = () => {
+const EditSpaces = () => {
   const [showModal, setShowModal] = useState(false);
   const [spaces, setSpaces] = useState([]);
   const [artworks, setArtworks] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedSpaceId, setSelectedSpaceId] = useState(null); // state to hold selected space_id
+  const [selectedSpaceId, setSelectedSpaceId] = useState(null);
 
-  useEffect(() => {
-    const fetchSpaces = async () => {
-      try {
-        const user = JSON.parse(sessionStorage.getItem("user"));
-        const userID = user.userid;
+  const [isEditing,setIsEditing] = useState(false);
+  const [editTitle,setEditTitle] = useState('');
+  const [editTag,setEditTag] = useState('');
+  const [editingField, setEditingField] = useState(null);
+  
+  const fetchSpaces = async () => {
+    try {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      const userID = user.userid;
 
-        const requestOptions = {
-          method: "POST",
-          body: JSON.stringify({ userid: userID }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
+      const requestOptions = {
+        method: "POST",
+        body: JSON.stringify({ userid: userID }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-        const response = await fetch("http://localhost:3001/api/check-spaces-from-user", requestOptions);
+      const response = await fetch("http://localhost:3001/api/check-spaces-from-user", requestOptions);
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const spacesData = await response.json();
-        setSpaces(spacesData);
-      } catch (error) {
-        setError(error.message);
-        console.error('There was a problem with the fetch operation:', error);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
-    fetchSpaces();
-  }, []);
 
+      const spacesData = await response.json();
+      setSpaces(spacesData);
+    } catch (error) {
+      setError(error.message);
+      console.error('There was a problem with the fetch operation:', error);
+    }
+  };
+  
   const fetchArts = async () => {
     try {
       const user = JSON.parse(sessionStorage.getItem("user"));
@@ -60,13 +62,17 @@ const DelAccountPage = () => {
 
       const artsData = await response.json();
       setArtworks(artsData);
-      console.log(artsData)
     } catch (error) {
       setError(error.message);
       console.error('There was a problem with the fetch operation:', error);
     }
   };
-  fetchArts();
+  
+  useEffect (() => {
+    fetchSpaces();
+    fetchArts();
+  }, []);
+  
 
   const handleButtonClick = (spaceId) => {
     setSelectedSpaceId(spaceId);
@@ -99,13 +105,105 @@ const DelAccountPage = () => {
       const data = await response.json();
       console.log('Delete success:', data);
       
-      setSpaces(spaces.filter(space => space.space_id !== selectedSpaceId)); // Update the UI
+      fetchSpaces();
       handleCloseModal();
     } catch (error) {
       console.error('Fetch operation failed:', error);
       alert('There was a problem with the fetch operation. Please try again later.');
     }
   };
+
+  const handleEditClick = (spaceID, currentValue, field) => {
+    setSelectedSpaceId(spaceID);
+    if (field === 'title') {
+      setEditTitle(currentValue);
+    } else if (field === 'tag') {
+      setEditTag(currentValue);
+    }
+    setEditingField(field);
+    setIsEditing(true);
+  };
+
+  const handleUpdateTitle = async () => {
+    if (editTitle && selectedSpaceId) {
+      try {
+        const response = await fetch('http://localhost:3001/api/update-space-title', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: editTitle, spaceID: selectedSpaceId }),
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Error updating title:', errorData);
+          alert('Error updating title: ' + (errorData.message || 'Unknown error'));
+          return;
+        }
+        setIsEditing(false);
+        fetchSpaces();
+      } catch (error) {
+        console.error('Fetch operation failed:', error);
+        alert('There was a problem with the fetch operation. Please try again later.');
+      }
+    } else {
+      setIsEditing(false);
+      console.log("Nothing to change")
+    }
+  };
+
+  const handleOnChangeStatus = async (e, spaceId) => {
+    const newStatus = e.target.value;
+    try {
+      const response = await fetch('http://localhost:3001/api/update-space-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus, spaceID: spaceId }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error updating status:', errorData);
+        alert('Error updating status: ' + (errorData.message || 'Unknown error'));
+        return;
+      }
+      fetchSpaces();
+    } catch (error) {
+      console.error('Fetch operation failed:', error);
+      alert('There was a problem with the fetch operation. Please try again later.');
+    }
+  };
+
+  const handleUpdateTag = async () => {
+    if (editTag && selectedSpaceId) {
+      try {
+        const response = await fetch('http://localhost:3001/api/update-space-tags', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tag: editTag, spaceID: selectedSpaceId }),
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Error updating title:', errorData);
+          alert('Error updating title: ' + (errorData.message || 'Unknown error'));
+          return;
+        }
+        setIsEditing(false);
+        fetchSpaces();
+      } catch (error) {
+        console.error('Fetch operation failed:', error);
+        alert('There was a problem with the fetch operation. Please try again later.');
+      }
+    } else {
+      setIsEditing(false);
+      console.log("Nothing to change")
+    }
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+  }
+ 
  
   return (
     <div>
@@ -145,16 +243,71 @@ const DelAccountPage = () => {
               </button>
               <div className="d-flex justify-content-between tm-text-gray">
                 <span className="tm-text-gray-light">{new Date(space.created_at).toLocaleDateString()}</span>
-                <span style={{ fontWeight: 'bold' }}>{space.title}</span>
+                <span style={{ fontWeight: 'bold' }}>
+                  {selectedSpaceId === space.space_id && isEditing && editingField == 'title' ? (
+                    <>
+                      <input
+                        type="text"
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                        className="form-edit"
+                        maxLength={30}
+                      />
+                      <button className='btn-rename tm-text-gray' onClick={handleUpdateTitle}>
+                        <i className="fas fa-check"></i>
+                      </button>
+                      <button className='btn-rename tm-text-gray' onClick={handleCancel}>
+                        <i className="fas fa-times"></i>
+                      </button>
+                      </>
+                    ) : (
+                    <>
+                      {space.title}
+                      <button className='btn-rename tm-text-gray' onClick={() => handleEditClick(space.space_id, space.title, 'title')}>
+                        <i className="fas fa-pencil-alt"></i>
+                      </button>
+                    </>
+                  )}
+                </span>
               </div>
               <div className="d-flex justify-content-between tm-text-gray">
-                <span>Status: {space.status}</span>
-                <span>Tags: {space.tag || 'None'}</span>
+                <span>Status:
+                  <select value={space.status} onChange={(e) => handleOnChangeStatus(e, space.space_id)}>
+                    <option value='public'>public</option>
+                    <option value='private'>private</option>
+                  </select>
+                </span>
+                <span>
+                  {selectedSpaceId === space.space_id && isEditing  && editingField == 'tag' ? (
+                    <>
+                      <input
+                        type="text"
+                        value={editTag}
+                        onChange={(e) => setEditTag(e.target.value)}
+                        placeholder='Tags'
+                        className="form-edit-tag"
+                        maxLength={200}
+                      />
+                      <button className='btn-rename tm-text-gray' onClick={handleUpdateTag}>
+                        <i className="fas fa-check"></i>
+                      </button>
+                      <button className='btn-rename tm-text-gray' onClick={handleCancel}>
+                        <i className="fas fa-times"></i>
+                      </button>
+                      </>
+                    ) : (
+                    <>
+                      Tags: {space.tag || 'None'}
+                      <button className='btn-rename tm-text-gray' onClick={() => handleEditClick(space.space_id, space.tag, 'tag')}>
+                        <i className="fas fa-pencil-alt"></i>
+                      </button>
+                    </>
+                  )}
+                </span>
               </div>
             </div>
           ))}
         </div>
-        <div className="container-fluid tm-container-content tm-mt-60">
         <div className="row mb-4">
             <h2 className="col-6 tm-text-primary">
               Your Artworks
@@ -176,7 +329,6 @@ const DelAccountPage = () => {
                     </div>
                     <figcaption className="d-flex align-items-center justify-content-center">
                         <h2>{art.title}</h2>
-                        <a href="map"></a>
                     </figcaption>
                 </figure>
                 <div className="d-flex justify-content-between tm-text-gray">
@@ -201,8 +353,7 @@ const DelAccountPage = () => {
           </div>
         )}
       </div>
-    </div>
   );
 };
 
-export default DelAccountPage;
+export default EditSpaces;

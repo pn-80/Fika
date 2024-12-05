@@ -58,7 +58,6 @@ a:hover { color:#f9ebaa; }
 #useraccount {
     display: flex;
     align-items: center;
-    font-weight: bold;
 }
 
 .useraccount.active,
@@ -87,7 +86,7 @@ a.tm-text-primary:hover { color:#f9ebaa; }
     text-align: center;
 }
 
-.nav-item { margin-right: 30px; }
+.nav-item { margin-right: 30px; cursor: pointer; }
 .nav-item:last-child { margin-right: 0; }
 
 .nav-link {
@@ -114,8 +113,17 @@ a.tm-text-primary:hover { color:#f9ebaa; }
     color: #f9ebaa;
 }
 
+.nav-link-useraccount{
+    font-weight: bold;
+}
+
 .nav-link-useraccount.active,
-.nav-link-useraccount-3:hover{
+.nav-link-useraccount:hover{
+    color: #f9ebaa;
+}
+
+.logout-link.active,
+.logout-link:hover{
     color: #f9ebaa;
 }
 
@@ -490,10 +498,32 @@ select:not([multiple]) {
     width: 100%;
     height: auto;
     overflow: hidden;
+    background: #030c17;
 }
 
 .zoom-container img {
     width: 100%;
     height: auto;
     object-fit: cover;
+    opacity: 0.9;
+}
+
+.btn-rename {
+    border: none;
+    background-color: transparent;
+}
+
+.form-edit {
+    display: flex;
+    height: 30px;
+    color: #7c87cd;
+    border-color: #7c87cd;
+}
+
+.form-edit-tag {
+    display: flex;
+    width: 100%;
+    height: 30px;
+    color: #7c87cd;
+    border-color: #7c87cd;
 }

@@ -29,7 +29,6 @@ app.post('/api/check-username', (req, res) => {
   const inputusername = req.body.username;
 
   const query = 'SELECT * FROM users WHERE username = ?';
-
   con.query(query, [inputusername], (err, results) => {
     if (err) {
       return res.status(500).json({ message: 'Server error' });
@@ -94,6 +93,75 @@ app.post('/api/delete-spaces', (req, res) => {
   });
 });
 
+app.post('/api/update-space-title', (req, res) => {
+  const {title, spaceID} = req.body;
+  
+  if (!title || !spaceID) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const query = 'UPDATE spaces SET title = ? WHERE space_id = ?';
+  
+  con.query(query, [title, spaceID], (err, results) => {
+    if (err) {
+      console.error('Error updating spaces title:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Space not found in spaces' });
+    }
+
+    res.json({ message: 'Space title updated successfully' });
+  });
+});
+
+app.post('/api/update-space-status', (req, res) => {
+  const {status, spaceID} = req.body;
+  
+  if (!status || !spaceID) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const query = 'UPDATE spaces SET status = ? WHERE space_id = ?';
+  
+  con.query(query, [status, spaceID], (err, results) => {
+    if (err) {
+      console.error('Error updating spaces title:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Space not found in spaces' });
+    }
+
+    res.json({ message: 'Space title updated successfully' });
+  });
+});
+
+app.post('/api/update-space-tags', (req, res) => {
+  const {tag, spaceID} = req.body;
+  
+  if (!tag || !spaceID) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const query = 'UPDATE spaces SET tag = ? WHERE space_id = ?';
+  
+  con.query(query, [tag, spaceID], (err, results) => {
+    if (err) {
+      console.error('Error updating space tag:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Space not found in space' });
+    }
+
+    res.json({ message: 'Space tag updated successfully' });
+  });
+});
+
 app.post('/api/delete-arts', (req, res) => {
   const artId = req.body.id;
 
@@ -154,22 +222,42 @@ app.post('/api/delete-arts', (req, res) => {
   });
 });
 
-app.post('/api/save-image', async (req, res) => {
+app.post('/api/update-art-title', (req, res) => {
+  const {title, artId} = req.body;
+  
+  if (!title || !artId) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const query = 'UPDATE artworks SET title = ? WHERE art_id = ?';
+  
+  con.query(query, [title, artId], (err, results) => {
+    if (err) {
+      console.error('Error updating artworks title:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Art not found in artworks' });
+    }
+
+    res.json({ message: 'Art title updated successfully' });
+  });
+});
+
+app.post('/api/save-image', (req, res) => {
   const { title, art, owner_id } = req.body;
 
-  // Check if all required fields are present
   if (!title || !art || !owner_id) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  // Start transaction
   con.beginTransaction((err) => {
     if (err) {
       console.error('Error starting transaction:', err);
       return res.status(500).json({ message: 'Server error' });
     }
 
-    // Insert into artworks table
     const query1 = 'INSERT INTO artworks (title, art) VALUES (?, ?)';
     con.query(query1, [title, art], (err, results) => {
       if (err) {
@@ -214,7 +302,6 @@ app.get('/api/img', (req, res) => {
     if (err) { return res.status(500).json({ error: err.message }); 
   }
     res.json(results);
-    console.log(results);
 });
 });
 
