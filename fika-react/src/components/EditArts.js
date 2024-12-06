@@ -12,6 +12,10 @@ const EditArts = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState('');
 
+  const [filteredSpaces, setFilteredSpaces] = useState([]);
+  const [filteredArtworks, setFilteredArtworks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const fetchSpaces = async () => {
     try {
       const user = JSON.parse(sessionStorage.getItem("user"));
@@ -31,6 +35,7 @@ const EditArts = () => {
 
       const spacesData = await response.json();
       setSpaces(spacesData);
+      setFilteredSpaces(spacesData);
     } catch (error) {
       setError(error.message);
       console.error('There was a problem with the fetch operation:', error);
@@ -56,6 +61,7 @@ const EditArts = () => {
 
       const artsData = await response.json();
       setArtworks(artsData);
+      setFilteredArtworks(artsData);
     } catch (error) {
       setError(error.message);
       console.error('There was a problem with the fetch operation:', error);
@@ -142,10 +148,30 @@ const EditArts = () => {
   const handleCancel = () => {
     setIsEditing(false);
   }
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  
+    // Filter spaces based on search term
+    const filteredSpacesData = spaces.filter(space => {
+      const title = space.title || ''; // Default to empty string if title is null or undefined
+      const tag = space.tag || ''; // Default to empty string if tag is null or undefined
+      return title.toLowerCase().includes(term.toLowerCase()) ||
+        tag.toLowerCase().includes(term.toLowerCase());
+    });
+    setFilteredSpaces(filteredSpacesData);
+  
+    // Filter artworks based on search term
+    const filteredArtworksData = artworks.filter(art => {
+      const title = art.title || ''; // Default to empty string if title is null or undefined
+      return title.toLowerCase().includes(term.toLowerCase());
+    });
+    setFilteredArtworks(filteredArtworksData);
+  };
  
   return (
     <div>
-      <SearchBox />
+      <SearchBox onSearch={handleSearch} />
       <div className="container-fluid tm-container-content tm-mt-60">
         <div className="row mb-4">
           <h2 className="col-6 tm-text-primary">Your Spaces</h2>
@@ -154,7 +180,7 @@ const EditArts = () => {
             </div>
         </div>
         <div className="row tm-mb-90 tm-gallery">
-          {spaces.length > 0 ? spaces.map((space) => (
+          {filteredSpaces.length > 0 ? filteredSpaces.map((space) => (
             <div key={space.space_id} className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
                 <figure className="effect-ming tm-video-item">
                     <img
@@ -187,7 +213,7 @@ const EditArts = () => {
             </div>
         </div>
         <div className="row tm-mb-90 tm-gallery">
-          {artworks.length > 0 ? artworks.map((art) => (
+          {filteredArtworks.length > 0 ? filteredArtworks.map((art) => (
             <div key={art.art_id} className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5" style={{ position: 'relative' }}>
                 <div className="zoom-container">  
                     <img

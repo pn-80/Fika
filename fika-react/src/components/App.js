@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import React, {useEffect} from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import './App.css';
 import Homepage from './FikaWelcome.js';
 import Login from "./Login.js";
@@ -13,13 +13,24 @@ import EditSpaces from './EditSpaces.js';
 import Draw from './Draw.js';
 import Polygon from './Polygon.js';
 import Gallery from './Gallery.js';
-import GodPage from './GodPage.js';
 import EditArts from './EditArts.js';
 import ViewArt from './ViewArt.js';
+import Chat from './Chat.js';
+
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const noNavBarPaths = ["/", "/login", "/register"];
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  useEffect(() => {
+    const restrictedPaths = ["/join-space","/create-avatar","/map","/yourAccount","/editSpace","/editArt", "/draw", "/polygon", "/gallery", "/view-art", "/chat", "/god"];
+    
+    if (restrictedPaths.includes(location.pathname) && !user) {
+      navigate('/');
+    }
+  }, [location.pathname, user, navigate]);
 
   return (
     <div>
@@ -39,7 +50,7 @@ function App() {
         <Route path="/polygon" exact element={<Polygon />} />
         <Route path="/gallery" exact element={<Gallery />} />
         <Route path='/view-art' exact element={<ViewArt />} />
-        <Route path="/god" exact element={<GodPage />} />
+        <Route path='/chat' exact element={<Chat />} />
       </Routes>
     </div>
   );

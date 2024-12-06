@@ -7,17 +7,12 @@ import godMintImage from "../images/godMint.png";
 const NavBar = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     const username = user ? user.username : null;
-    const userRole = user ? user.role : null;
     const userImage = (user && user.userid === 2) ? godMintImage : (user ? user.image : null);
 
     const navigate = useNavigate(); // useNavigate hook from react-router-dom
 
     const handleAccountClick = () => {
-        if (userRole === "god") {
-            navigate('/god');
-        } else if (userRole === "disciple") {
-            navigate('/yourAccount');
-        }
+        navigate('/yourAccount');
     };
 
     const handleLogout = () => {
