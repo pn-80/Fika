@@ -72,6 +72,10 @@ const AccountPage = () => {
     navigate('/view-art', { state: { artId } });
   }
 
+  const handleJoinSpace = (spaceId) => {
+    navigate('/create-avatar', { state: { spaceId } });
+  }
+
     return (
       <div>
       <SearchBox />
@@ -93,9 +97,8 @@ const AccountPage = () => {
                             alt="Default Image"
                             className="img-fluid"
                     />
-                    <figcaption className="d-flex align-items-center justify-content-center">
+                    <figcaption className="d-flex align-items-center justify-content-center" onClick={() => handleJoinSpace(space.space_id)}>
                         <h2>{space.title}</h2>
-                        <a href="map"></a>
                     </figcaption>
                 </figure>
                 <div className="d-flex justify-content-between tm-text-gray">
