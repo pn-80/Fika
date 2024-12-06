@@ -201,7 +201,7 @@ const ViewArt = () => {
                 {commentsData && commentsData.length>0 ? commentsData.map((comment) => (
                 <div className="be-comment">
                     <div className="be-img-comment">
-                        <img src={(comment.username===username) ? userImage :((comment.username === 'God_Mint') ? godMintImage : randomImage)} className="comment-profile" />
+                        <img src={(comment.username === 'God_Mint') ? godMintImage :((comment.username===username) ? userImage : randomImage)} className="comment-profile" />
                     </div>
                     <div className="be-comment-content">
                         <span style={{fontSize: '18px'}}>
@@ -233,7 +233,9 @@ const ViewArt = () => {
                                         <div className="be-comment-text">
                                             {comment.comment}
                                             <div className="comment-actions">
-                                            <button className='btn-rename tm-text-gray'><i class="fas fa-pencil-alt"onClick={() => handleShowEditForm(comment.id, comment.comment)} ></i></button>
+                                            {comment.username === username ? (
+                                                <button className='btn-rename tm-text-gray'><i class="fas fa-pencil-alt"onClick={() => handleShowEditForm(comment.id, comment.comment)} ></i></button>
+                                            ):null}
                                             <button className='btn-rename tm-text-gray'><i class="fas fa-trash-alt"onClick={() => handleShowModal(comment.id)} ></i></button>
                                             </div>
                                         </div>
