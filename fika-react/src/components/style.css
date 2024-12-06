@@ -508,6 +508,11 @@ select:not([multiple]) {
     opacity: 0.9;
 }
 
+.input-button-container {
+    display: flex;
+    align-items: center;
+}
+
 .btn-rename {
     border: none;
     background-color: transparent;
@@ -522,8 +527,116 @@ select:not([multiple]) {
 
 .form-edit-tag {
     display: flex;
-    width: 100%;
+    width: 200px;
     height: 30px;
     color: #7c87cd;
     border-color: #7c87cd;
+}
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.art-card {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.img-showcase {
+    border: #f9ebaa;
+    border-style: ridge;
+    border-width: 10px;
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+}
+
+.be-comment-block {
+    margin-bottom: 50px !important;
+    padding: 50px 70px;
+}
+
+.comments-title {
+    font-size: 25px;
+    color: #7c87cd;
+    margin-bottom: 15px;
+}
+
+.be-img-comment {
+    float: left;
+    margin-bottom: 15px;
+}
+
+.comment-profile {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.be-comment-content {
+    margin-left: 100px;
+}
+
+.be-comment-content span {
+    display: inline-block;
+    width: 49%;
+    margin-bottom: 15px;
+}
+
+.be-comment-text {
+    font-size: 15px;
+    line-height: 23px;
+    color: #615c64;
+    display: block;
+    background: #f6f6f7;
+    border: 1px solid #edeff2;
+    padding: 15px 20px 20px 20px;
+    margin-bottom: 20px;
+}
+
+.no-comment {
+    color: #615c64;
+    margin-left: 60px;
+    margin-bottom: 60px;
+}
+
+
+.form-group .form-input {
+    margin-top: 20px;
+    font-size: 15px;
+    line-height: 30px;
+    font-weight: 400;
+    width: 100%;
+    height: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    border: 1px solid #615c64;
+    border-radius: 3px;
+}
+
+textarea {
+    resize: none;
+}
+
+.form-edit {
+    font-size: 15px;
+    line-height: 23px;
+    font-weight: 400;
+    width: 100%;
+    height: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    border: 1px solid #615c64;
+    border-radius: 3px;
+}
+
+.comment-actions {
+    text-align: right;
 }

@@ -217,7 +217,7 @@ const EditArts = () => {
                     <span className="tm-text-gray-light">{new Date(art.created_at).toLocaleDateString()}</span>
                     <span style={{ fontWeight: 'bold' }}>
                     {selectedArtId === art.art_id && isEditing ? (
-                      <>
+                      <div className="input-button-container">
                         <input
                           type="text"
                           value={editTitle}
@@ -225,13 +225,13 @@ const EditArts = () => {
                           className="form-edit"
                           maxLength={30}
                         />
-                        <button className='btn-rename tm-text-gray' onClick={handleUpdateTitle}>
+                        <button className="btn-rename tm-text-gray" onClick={handleUpdateTitle}>
                           <i className="fas fa-check"></i>
                         </button>
-                        <button className='btn-rename tm-text-gray' onClick={handleCancel}>
+                        <button className="btn-rename tm-text-gray" onClick={handleCancel}>
                           <i className="fas fa-times"></i>
                         </button>
-                      </>
+                      </div>
                     ) : (
                       <>
                         {art.title}

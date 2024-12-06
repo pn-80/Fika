@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import './style.css';
 
@@ -6,6 +7,8 @@ const AccountPage = () => {
   const [spaces, setSpaces] = useState([]);
   const [artworks, setArtworks] = useState([]);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
   
   useEffect(() => {
     const fetchSpaces = async () => {
@@ -57,7 +60,6 @@ const AccountPage = () => {
 
         const artsData = await response.json();
         setArtworks(artsData);
-        console.log(artsData)
       } catch (error) {
         setError(error.message);
         console.error('There was a problem with the fetch operation:', error);
@@ -65,6 +67,10 @@ const AccountPage = () => {
     };
     fetchArts();
   }, []);
+
+  const handleViewArt = (artId) => {
+    navigate('/view-art', { state: { artId } });
+  }
 
     return (
       <div>
@@ -98,6 +104,8 @@ const AccountPage = () => {
                 </div>
                 <div className="d-flex justify-content-between tm-text-gray">
                     <span>Status: {space.status}</span>
+                </div>
+                <div className="d-flex justify-content-between tm-text-gray">
                     <span>Tags: {space.tag || 'None'}</span>
                 </div>
             </div>
@@ -126,9 +134,8 @@ const AccountPage = () => {
                             className="img-fluid"
                         />
                     </div>
-                    <figcaption className="d-flex align-items-center justify-content-center">
+                    <figcaption className="d-flex align-items-center justify-content-center" onClick={() => handleViewArt(art.art_id)}>
                         <h2>{art.title}</h2>
-                        <a href="map"></a>
                     </figcaption>
                 </figure>
                 <div className="d-flex justify-content-between tm-text-gray">

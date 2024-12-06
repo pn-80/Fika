@@ -45,7 +45,7 @@ app.post('/api/check-username', (req, res) => {
 app.post('/api/check-spaces-from-user', (req, res) => {
   const userID = req.body.userid;
 
-  const query = 'SELECT * FROM spaces INNER JOIN maps WHERE spaces.owner_id = ? AND spaces.map_id = maps.map_id';
+  const query = 'SELECT * FROM spaces INNER JOIN maps ON spaces.map_id = maps.map_id WHERE spaces.owner_id = ?';
 
   con.query(query, [userID], (err, results) => {
     if (err) {
@@ -59,7 +59,7 @@ app.post('/api/check-spaces-from-user', (req, res) => {
 app.post('/api/check-arts-from-user', (req, res) => {
   const userID = req.body.userid;
 
-  const query = 'SELECT * FROM artworks INNER JOIN user_artworks ON artworks.art_id = user_artworks.art_id INNER JOIN users ON user_artworks.owner_id = user_id  WHERE user_artworks.owner_id = ?';
+  const query = 'SELECT artworks.art_id, title, art, artworks.created_at,owner_id,username FROM artworks INNER JOIN user_artworks ON artworks.art_id = user_artworks.art_id INNER JOIN users ON user_artworks.owner_id = user_id  WHERE user_artworks.owner_id = ?';
 
   con.query(query, [userID], (err, results) => {
     if (err) {
@@ -298,11 +298,104 @@ app.post('/api/save-image', (req, res) => {
 });
 
 app.get('/api/img', (req, res) => { 
-  con.query('SELECT * FROM artworks INNER JOIN user_artworks INNER JOIN users WHERE artworks.art_id = user_artworks.art_id AND user_artworks.owner_id = user_id', (err, results) => { 
+  con.query('SELECT artworks.art_id, title, art, artworks.created_at,owner_id,username FROM artworks INNER JOIN user_artworks INNER JOIN users WHERE artworks.art_id = user_artworks.art_id AND user_artworks.owner_id = user_id', (err, results) => { 
     if (err) { return res.status(500).json({ error: err.message }); 
   }
     res.json(results);
 });
+});
+
+app.post('/api/check-arts-from-artid', (req, res) => {
+  const artID = req.body.artID;
+
+  const query = 'SELECT artworks.art_id, title, art, artworks.created_at,owner_id,username FROM artworks INNER JOIN user_artworks ON artworks.art_id = user_artworks.art_id INNER JOIN users ON user_artworks.owner_id = user_id  WHERE artworks.art_id = ?';
+
+  con.query(query, [artID], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    res.json(results);
+  });
+});
+
+app.post('/api/check-comments-from-artid', (req, res) => {
+  const artID = req.body.artID;
+
+  const query = 'SELECT comments.id, comments.art_id, comments.user_id, comment, comments.created_at, username FROM comments INNER JOIN user_artworks ON comments.art_id = user_artworks.art_id INNER JOIN users ON comments.user_id = users.user_id  WHERE comments.art_id = ?';
+
+  con.query(query, [artID], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    res.json(results);
+  });
+});
+
+app.post('/api/add-comment', (req, res) => {
+  const {artID, userID, comment} = req.body;
+  
+  if (!artID || !userID || !comment) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const query = 'INSERT INTO comments (art_id, user_id, comment) VALUES (?, ?, ?)';
+  
+  con.query(query, [artID, userID, comment], (err, results) => {
+    if (err) {
+      console.error('Error updating comment:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    res.json({ message: 'Comment updated successfully' });
+  });
+});
+
+app.post('/api/edit-comment', (req, res) => {
+  const {ID, comment} = req.body;
+  
+  if (!ID || !comment) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const query = 'UPDATE comments SET comment = ? WHERE id = ?';
+  
+  con.query(query, [comment,ID], (err, results) => {
+    if (err) {
+      console.error('Error updating comment:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    res.json({ message: 'Comment updated successfully' });
+  });
+});
+
+app.post('/api/delete-comment', (req, res) => {
+  const ID = req.body.ID;
+
+  if (!ID) {
+    return res.status(400).json({ message: 'ID is required' });
+  }
+
+  const query = 'DELETE FROM comments WHERE id = ?';
+
+  con.query(query, [ID], (err, results) => {
+    if (err) {
+      console.error('Error deleting comment:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    res.json({ message: 'Space deleted successfully' });
+  });
 });
 
 app.listen(port, () => {

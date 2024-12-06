@@ -15,6 +15,7 @@ import Polygon from './Polygon.js';
 import Gallery from './Gallery.js';
 import GodPage from './GodPage.js';
 import EditArts from './EditArts.js';
+import ViewArt from './ViewArt.js';
 
 function App() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function App() {
         <Route path="/draw" exact element={<Draw />} />
         <Route path="/polygon" exact element={<Polygon />} />
         <Route path="/gallery" exact element={<Gallery />} />
+        <Route path='/view-art' exact element={<ViewArt />} />
         <Route path="/god" exact element={<GodPage />} />
       </Routes>
     </div>

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './style.css';
 
 const Gallery = () => {
     const [images, setImages] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -17,6 +19,10 @@ const Gallery = () => {
         };
         fetchImages();
     }, []);
+    
+    const handleViewArt = (artId) => {
+      navigate('/view-art', { state: { artId } });
+    }
 
     return (
         <div>
@@ -37,9 +43,8 @@ const Gallery = () => {
                             className="img-fluid"
                         />
                     </div>
-                      <figcaption className="d-flex align-items-center justify-content-center">
+                      <figcaption className="d-flex align-items-center justify-content-center" onClick={() => handleViewArt(image.art_id)}>
                           <h2>{image.title}</h2>
-                          {/*<a href="map"></a>*/}
                       </figcaption>
                   </figure>
                   <div className="d-flex justify-content-between tm-text-gray">

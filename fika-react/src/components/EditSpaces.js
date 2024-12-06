@@ -245,7 +245,7 @@ const EditSpaces = () => {
                 <span className="tm-text-gray-light">{new Date(space.created_at).toLocaleDateString()}</span>
                 <span style={{ fontWeight: 'bold' }}>
                   {selectedSpaceId === space.space_id && isEditing && editingField == 'title' ? (
-                    <>
+                    <div className="input-button-container">
                       <input
                         type="text"
                         value={editTitle}
@@ -259,7 +259,7 @@ const EditSpaces = () => {
                       <button className='btn-rename tm-text-gray' onClick={handleCancel}>
                         <i className="fas fa-times"></i>
                       </button>
-                      </>
+                    </div>
                     ) : (
                     <>
                       {space.title}
@@ -277,9 +277,12 @@ const EditSpaces = () => {
                     <option value='private'>private</option>
                   </select>
                 </span>
+              </div>
+              <div className="d-flex justify-content-between tm-text-gray">
                 <span>
                   {selectedSpaceId === space.space_id && isEditing  && editingField == 'tag' ? (
-                    <>
+                    <div className="input-button-container">
+                      <label>Tags: </label>
                       <input
                         type="text"
                         value={editTag}
@@ -294,7 +297,7 @@ const EditSpaces = () => {
                       <button className='btn-rename tm-text-gray' onClick={handleCancel}>
                         <i className="fas fa-times"></i>
                       </button>
-                      </>
+                    </div>
                     ) : (
                     <>
                       Tags: {space.tag || 'None'}
